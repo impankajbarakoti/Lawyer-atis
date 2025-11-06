@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 // Data for the two primary experts
 const experts = [
@@ -6,25 +6,47 @@ const experts = [
     name: "Sarah Barrett",
     title: "Founder",
     imageUrl:
-      "https://matchthemes.com/demowp/atis/wp-content/uploads/team-1.jpg", // Replace with image of Sarah Barrett
+      "https://matchthemes.com/demowp/atis/wp-content/uploads/team-1.jpg",
   },
   {
     name: "Mike Holmes",
     title: "Senior Partner",
     imageUrl:
-      "https://matchthemes.com/demowp/atis/wp-content/uploads/team-2.jpg", // Replace with image of Mike Holmes
+      "https://matchthemes.com/demowp/atis/wp-content/uploads/team-2.jpg",
   },
 ];
 
 // Data for the FAQ/Accordions
-const questions = [
-  "Why choose our lawyers firm?",
-  "How does it work?",
-  "Is the first consultation free?",
-  "How can we help?",
+const faqs = [
+  {
+    question: "Why choose our lawyers firm?",
+    answer:
+      "Our firm has years of experience and a team of expert attorneys dedicated to providing the best legal guidance tailored to your needs.",
+  },
+  {
+    question: "How does it work?",
+    answer:
+      "You can schedule a consultation, discuss your case, and our attorneys will provide a step-by-step plan to address your legal matters efficiently.",
+  },
+  {
+    question: "Is the first consultation free?",
+    answer:
+      "Yes! We offer a complimentary initial consultation to understand your situation and provide guidance on the next steps.",
+  },
+  {
+    question: "How can we help?",
+    answer:
+      "We provide legal solutions in areas such as corporate law, family law, criminal defense, and more, ensuring our clients receive personalized support.",
+  },
 ];
 
 const MeetTheExpertsSection = () => {
+  const [activeIndex, setActiveIndex] = useState(null);
+
+  const toggleAccordion = (index) => {
+    setActiveIndex(activeIndex === index ? null : index);
+  };
+
   return (
     <section className="bg-white py-16 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-7xl mx-auto">
@@ -89,13 +111,25 @@ const MeetTheExpertsSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
           {/* Left Column: FAQ/Accordion List */}
           <div>
-            {questions.map((question, index) => (
+            {faqs.map((faq, index) => (
               <div
                 key={index}
-                className="border border-gray-300 p-4 mb-4 cursor-pointer hover:bg-gray-50 transition duration-200"
+                className="border border-gray-300 mb-4 rounded-md overflow-hidden"
               >
-                <p className="font-medium text-gray-800">+ {question}</p>
-                {/* In a real app, you would add state here to handle accordion expansion */}
+                <button
+                  onClick={() => toggleAccordion(index)}
+                  className="w-full text-left px-4 py-4 flex justify-between items-center font-medium text-gray-800 hover:bg-gray-50 transition duration-200"
+                >
+                  <span>{faq.question}</span>
+                  <span className="text-red-600 text-xl">
+                    {activeIndex === index ? "−" : "+"}
+                  </span>
+                </button>
+                {activeIndex === index && (
+                  <div className="px-4 py-3 text-gray-700 text-sm bg-gray-50">
+                    {faq.answer}
+                  </div>
+                )}
               </div>
             ))}
           </div>
